@@ -5,6 +5,34 @@
 #include <cmath>
 using namespace std;
 #define PI 3.14159265359
+
+//gcc version (x86 only)
+int iround( double a ) {
+  int r;
+  __asm__ __volatile__(
+    "fldl %1    \n\t"
+    "fistpl %0  \n\t"
+    : "=m" (r)
+    : "m" (a)
+  );
+  return r;
+}
+float sinx( float degree ) {
+    float result, two_right_angles = 180.0f ;
+    /* Convert angle from degrees to radians and then calculate sin value */
+    __asm__ __volatile__ ( "fldl %1;"
+                            "fldl %2;"
+                            "fldpi;"
+                            "fmul;"
+                            "fdiv;"
+                            "fsin;"
+                            "fistpl %0"
+                            "fldl %0;" : "=g" (result) :
+                    				"g"(two_right_angles), "g" (degree)
+    ) ;
+    return result ;
+}
+
 int suma( int $a, int $b ){
     int $result;
     __asm__ __volatile__(
@@ -54,11 +82,7 @@ float division( int $a, int $b ){
     }
 }
 double test(double a){
-    __asm {
-      fld qword ptr [a]
-      fsin
-      "movl %%eax, %0;" : "=g" ( $result ) : "g" ( $a )
-    }
+
     return 0.0;
 }
 float seno(float deg){
@@ -102,6 +126,7 @@ int main(int argc, char** argv) {
     int numero1, numero2;
     float fnumero1, fnumero2;
     float deg;
+    double test, res;
     char x='v';
     do{
         printf( " Calculadora Cientifica\n\n" );
@@ -227,7 +252,16 @@ int main(int argc, char** argv) {
                 printf( "\n\n\t\t Ingresa el angulo: " );
                 scanf( "%f", &deg );
                 printf( "\n\n" );
-                printf( "\t\t La cosecnate del angulo %f es = %f\n", deg,cosecante(deg) );
+                printf( "\t\t La cosecate del angulo %f es = %f\n", deg,cosecante(deg) );
+                printf( "\n\n" );
+                break;
+            case 't':
+                printf( "\n\t\t Test" );
+                printf( "\n\n\t\t Ingresa un meme: " );
+                scanf( "%lf", &test );
+                printf( "\n\n" );
+                res = iround(test);
+                printf( "\t\t Resultado %lf es = %lf\n", test,res );
                 printf( "\n\n" );
                 break;
             default:
