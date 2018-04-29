@@ -6,32 +6,31 @@
 using namespace std;
 #define PI 3.14159265359
 
-//gcc version (x86 only)
-int iround( double a ) {
-  int r;
+float iround( double $a, double $b ) {
+  float $result;
   __asm__ __volatile__(
-    "fldl %1    \n\t"
-    "fistpl %0  \n\t"
-    : "=m" (r)
-    : "m" (a)
+  "fmovl %1, %%eax;"
+  "fmovl %2, %%ebx;"
+  "faddl %%ebx,%%eax;"
+  "fmovl %%eax, %0;" : "=g" ( $result ) : "g" ( $a ), "g" ( $b )
   );
-  return r;
+  return $result ;
 }
-float sinx( float degree ) {
-    float result, two_right_angles = 180.0f ;
-    /* Convert angle from degrees to radians and then calculate sin value */
-    __asm__ __volatile__ ( "fldl %1;"
-                            "fldl %2;"
-                            "fldpi;"
-                            "fmul;"
-                            "fdiv;"
-                            "fsin;"
-                            "fistpl %0"
-                            "fldl %0;" : "=g" (result) :
-                    				"g"(two_right_angles), "g" (degree)
-    ) ;
-    return result ;
-}
+// float sinx( float degree ) {
+//     float result, two_right_angles = 180.0f ;
+//     /* Convert angle from degrees to radians and then calculate sin value */
+//     __asm__ __volatile__ ( "fldl %1;"
+//                             "fldl %2;"
+//                             "fldpi;"
+//                             "fmul;"
+//                             "fdiv;"
+//                             "fsin;"
+//                             "fistpl %0"
+//                             "fldl %0;" : "=g" (result) :
+//                     				"g"(two_right_angles), "g" (degree)
+//     ) ;
+//     return result ;
+// }
 
 int suma( int $a, int $b ){
     int $result;
@@ -81,6 +80,23 @@ float division( int $a, int $b ){
         return val;
     }
 }
+float porcentaje(float a, float b, char op){
+    float result = 0;
+    if (op == '+') {
+      result = (a/100)*b+a;
+    }
+    if (op == '-') {
+      result = a-((a/100)*b);
+    }
+    return result;
+}
+float exponente(float a, float b){
+    float result = a;
+    for (int i = 0; i < b; i++) {
+      result += result * a;
+    }
+    return result;
+}
 double test(double a){
 
     return 0.0;
@@ -121,13 +137,23 @@ float cosecante(float deg){
     result = 1/sin(deg*PI/180);
     return result;
 }
+float secante(float deg){
+    float result;
+    result = 1/cos(deg*PI/180);
+    return result;
+}
+float cotangente(float deg){
+    float result;
+    result = 1/tan(deg*PI/180);
+    return result;
+}
 
 int main(int argc, char** argv) {
     int numero1, numero2;
     float fnumero1, fnumero2;
     float deg;
     double test, res;
-    char x='v';
+    char x='z';
     do{
         printf( " Calculadora Cientifica\n\n" );
         printf( "\n\t\t Operaciones Aritmeticas" );
@@ -135,27 +161,21 @@ int main(int argc, char** argv) {
         printf( "\n\t b) Resta" );
         printf( "\n\t c) Multiplicacion" );
         printf( "\n\t d) Division" );
+        printf( "\n\t e) Porcentaje" );
+        printf( "\n\t f) Operacion Exponencial" );
 
         printf( "\n\n\t\t Operaciones Matematicas" );
-        printf( "\n\t e) Seno" );
-        printf( "\n\t f) Coseno" );
-        printf( "\n\t g) Tangente" );
-        printf( "\n\t h) Seno hiperbolico" );
-        printf( "\n\t i) Coseno hiperbolico" );
-        printf( "\n\t j) Tangente hiperbolica" );
-        printf( "\n\t k) Cosecante" );
+        printf( "\n\t g) Seno" );
+        printf( "\n\t h) Coseno" );
+        printf( "\n\t i) Tangente" );
+        printf( "\n\t j) Seno hiperbolico" );
+        printf( "\n\t k) Coseno hiperbolico" );
+        printf( "\n\t l) Tangente hiperbolica" );
+        printf( "\n\t m) Cosecante" );
+        printf( "\n\t n) Secante" );
+        printf( "\n\t o) Cotangente" );
         printf( "\n\t s) Salir" );
 
-        /*
-        printf( "\n\n\t\t Ingresar el primer numero entero : " );
-        scanf( "%d", &numero1 );
-        printf( "\n\n\t\t Ingresar el segundo numero entero : " );
-        scanf( "%d", &numero2 );
-        printf( "\n\n" );
-        printf( "\t\t El area es = %d\n", AreaT(numero1,numero2) );
-        printf( "\n\n" );
-        printf( "\n\n\t\t Presiona v para volver a calcular o s para salir: " );
-         */
         printf( "\n\n\t\t Ingresa una opcion : " );
         cin>>x;
         switch (x){
@@ -255,12 +275,18 @@ int main(int argc, char** argv) {
                 printf( "\t\t La cosecate del angulo %f es = %f\n", deg,cosecante(deg) );
                 printf( "\n\n" );
                 break;
+            case 'l':
+
+                break;
+            case 'm':
+
+                break;
             case 't':
                 printf( "\n\t\t Test" );
                 printf( "\n\n\t\t Ingresa un meme: " );
                 scanf( "%lf", &test );
                 printf( "\n\n" );
-                res = iround(test);
+                res = iround(test,10.2);
                 printf( "\t\t Resultado %lf es = %lf\n", test,res );
                 printf( "\n\n" );
                 break;
