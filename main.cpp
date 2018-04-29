@@ -76,7 +76,7 @@ float porcentaje(float a, float b, char op){
       result = (a/100)*b+a;
     }
     if (op == '-') {
-      result = a-((a/100)*b);
+      result = a-(a/100*b);
     }
     return result;
 }
