@@ -6,16 +6,6 @@
 using namespace std;
 #define PI 3.14159265359
 
-float iround( double $a, double $b ) {
-  float $result;
-  __asm__ __volatile__(
-  "fmovl %1, %%eax;"
-  "fmovl %2, %%ebx;"
-  "faddl %%ebx,%%eax;"
-  "fmovl %%eax, %0;" : "=g" ( $result ) : "g" ( $a ), "g" ( $b )
-  );
-  return $result ;
-}
 // float sinx( float degree ) {
 //     float result, two_right_angles = 180.0f ;
 //     /* Convert angle from degrees to radians and then calculate sin value */
@@ -90,10 +80,10 @@ float porcentaje(float a, float b, char op){
     }
     return result;
 }
-float exponente(float a, float b){
+float exponente(int a, int b){
     float result = a;
     for (int i = 0; i < b; i++) {
-      result += result * a;
+      result *= a;
     }
     return result;
 }
@@ -152,7 +142,6 @@ int main(int argc, char** argv) {
     int numero1, numero2;
     float fnumero1, fnumero2;
     float deg;
-    double test, res;
     char x='z';
     do{
         printf( " Calculadora Cientifica\n\n" );
@@ -220,6 +209,30 @@ int main(int argc, char** argv) {
                 printf( "\n\n" );
                 break;
             case 'e':
+                printf( "\n\t\t Porcentaje" );
+                printf( "\n\n\t\t Ingresa la cantidad: " );
+                scanf( "%f", &fnumero1 );
+                char s;
+                cin.ignore();
+                printf( "\n\n\t\t Ingresa el operador (+, -): " );
+                scanf( "%c", &s );
+                printf( "\n\n\t\t Ingresa el porcentaje: " );
+                scanf( "%f", &fnumero2 );
+                printf( "\n\n" );
+                printf( "\t\t El resultado de  %f %c %f es = %f\n", fnumero1,s,fnumero2,porcentaje(fnumero1,fnumero2,s) );
+                printf( "\n\n" );
+                break;
+            case 'f':
+                printf( "\n\t\t Operacion Exponencial" );
+                printf( "\n\n\t\t Ingresar el numero a elevar: " );
+                scanf( "%d", &numero1 );
+                printf( "\n\n\t\t Ingresar el exponente: " );
+                scanf( "%d", &numero2 );
+                printf( "\n\n" );
+                printf( "\t\t El resultado es = %f\n", exponente(numero1,numero2-1) );
+                printf( "\n\n" );
+                break;
+            case 'g':
                 printf( "\n\t\t Seno" );
                 printf( "\n\n\t\t Ingresa el angulo: " );
                 scanf( "%f", &deg );
@@ -227,7 +240,7 @@ int main(int argc, char** argv) {
                 printf( "\t\t El seno del angulo %f es = %f\n", deg,seno(deg) );
                 printf( "\n\n" );
                 break;
-            case 'f':
+            case 'h':
                 printf( "\n\t\t Coseno" );
                 printf( "\n\n\t\t Ingresa el angulo: " );
                 scanf( "%f", &deg );
@@ -235,7 +248,7 @@ int main(int argc, char** argv) {
                 printf( "\t\t El coseno del angulo %f es = %f\n", deg,coseno(deg) );
                 printf( "\n\n" );
                 break;
-            case 'g':
+            case 'i':
                 printf( "\n\t\t Tangente" );
                 printf( "\n\n\t\t Ingresa el angulo: " );
                 scanf( "%f", &deg );
@@ -243,7 +256,7 @@ int main(int argc, char** argv) {
                 printf( "\t\t La tangente del angulo %f es = %f\n", deg,tangente(deg) );
                 printf( "\n\n" );
                 break;
-            case 'h':
+            case 'j':
                 printf( "\n\t\t Seno hiperbolico" );
                 printf( "\n\n\t\t Ingresa el angulo expresado en radianes: " );
                 scanf( "%f", &deg );
@@ -251,7 +264,7 @@ int main(int argc, char** argv) {
                 printf( "\t\t El seno hiperbolico del angulo %f es = %f\n", deg,senoh(deg) );
                 printf( "\n\n" );
                 break;
-            case 'i':
+            case 'k':
                 printf( "\n\t\t Coseno hiperbolico" );
                 printf( "\n\n\t\t Ingresa el angulo expresado en radianes: " );
                 scanf( "%f", &deg );
@@ -259,7 +272,7 @@ int main(int argc, char** argv) {
                 printf( "\t\t El coseno hiperbolico del angulo %f es = %f\n", deg,cosenoh(deg) );
                 printf( "\n\n" );
                 break;
-            case 'j':
+            case 'l':
                 printf( "\n\t\t Tangente hiperbolica" );
                 printf( "\n\n\t\t Ingresa el angulo expresado en radianes: " );
                 scanf( "%f", &deg );
@@ -267,7 +280,7 @@ int main(int argc, char** argv) {
                 printf( "\t\t La tangente hiperbolica del angulo %f es = %f\n", deg,tangenteh(deg) );
                 printf( "\n\n" );
                 break;
-            case 'k':
+            case 'm':
                 printf( "\n\t\t Cosecante" );
                 printf( "\n\n\t\t Ingresa el angulo: " );
                 scanf( "%f", &deg );
@@ -275,20 +288,24 @@ int main(int argc, char** argv) {
                 printf( "\t\t La cosecate del angulo %f es = %f\n", deg,cosecante(deg) );
                 printf( "\n\n" );
                 break;
-            case 'l':
-
+            case 'n':
+                printf( "\n\t\t Secante" );
+                printf( "\n\n\t\t Ingresa el angulo: " );
+                scanf( "%f", &deg );
+                printf( "\n\n" );
+                printf( "\t\t La secante del angulo %f es = %f\n", deg,secante(deg) );
+                printf( "\n\n" );
                 break;
-            case 'm':
-
+            case 'o':
+                printf( "\n\t\t Cotangente" );
+                printf( "\n\n\t\t Ingresa el angulo: " );
+                scanf( "%f", &deg );
+                printf( "\n\n" );
+                printf( "\t\t La cotangente del angulo %f es = %f\n", deg,cotangente(deg) );
+                printf( "\n\n" );
                 break;
             case 't':
-                printf( "\n\t\t Test" );
-                printf( "\n\n\t\t Ingresa un meme: " );
-                scanf( "%lf", &test );
-                printf( "\n\n" );
-                res = iround(test,10.2);
-                printf( "\t\t Resultado %lf es = %lf\n", test,res );
-                printf( "\n\n" );
+
                 break;
             default:
                 if ( x != 's' ){
